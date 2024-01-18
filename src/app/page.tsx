@@ -1,9 +1,24 @@
-import Image from "next/image";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { AuthButtonServer } from "./components/auth-buttons-server";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = createServerComponentClient({ cookies });
+  const { data: posts } = await supabase
+    .from("posts")
+    .select("*, users(name, avatar_url, user_name)");
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session === null) {
+    redirect("/login");
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Welcoming
+      Welcoming <AuthButtonServer />
+      <pre>{JSON.stringify(posts, null, 2)}</pre>
     </main>
   );
 }
