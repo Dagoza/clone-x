@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Card,
   CardBody,
   CardFooter,
@@ -11,7 +10,6 @@ import {
   IconMessageCircle,
   IconRepeat,
 } from "@tabler/icons-react";
-import Image from "next/image";
 
 export default function TwitterCard({
   username,

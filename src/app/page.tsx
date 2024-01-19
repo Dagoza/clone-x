@@ -1,7 +1,9 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { AuthButtonServer } from "./components/auth-buttons-server";
+import CardsListLoader from "./components/cards-list-loader";
 import { ComposePost } from "./components/compose-post";
 import { PostsList } from "./components/posts-list";
 import { Post } from "./types";
@@ -18,11 +20,14 @@ export default async function Home() {
   if (session === null) {
     redirect("/login");
   }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <section className="max-w-[600px] w-full mx-auto border-l border-r border-white/20 min-h-screen">
         <ComposePost avatarUrl={session?.user?.user_metadata?.avatar_url} />
-        <PostsList posts={posts as Post[]} />
+        <Suspense fallback={<CardsListLoader numberOfCards={5} />}>
+          <PostsList posts={posts as Post[]} />
+        </Suspense>
       </section>
       <AuthButtonServer />
     </main>
