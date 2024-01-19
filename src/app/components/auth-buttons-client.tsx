@@ -37,7 +37,9 @@ export function AuthButton({ session }: { session: Session | null }) {
           Sign in with Github
         </button>
       ) : (
-        <Button onClick={handleSignOut}>Sign Out</Button>
+        <Button radius="full" onClick={handleSignOut}>
+          Sign Out
+        </Button>
       )}
     </header>
   );
