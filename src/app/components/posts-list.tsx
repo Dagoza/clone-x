@@ -1,8 +1,7 @@
 "use client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useFetchPosts } from "../hooks/usePosts";
 import { Post, RandomUser } from "../types";
 import TwitterCard from "./twitter-card";
-import { HTTPRequest } from "../http-request";
 
 const mapRandomUserToPost = (user: RandomUser): Post => ({
   id: user.id.value,
@@ -16,20 +15,9 @@ const mapRandomUserToPost = (user: RandomUser): Post => ({
 });
 
 export function PostsList({ posts }: { posts: Post[] }) {
-  // docs: https://tanstack.com/query/v5/docs/react/guides/suspense
-  const { data: users, isLoading } = useSuspenseQuery<RandomUser[]>({
-    queryKey: ["randomPosts"],
-    queryFn: () =>
-      Promise.all([
-        HTTPRequest.get<{ results: RandomUser[] }>(
-          "https://randomuser.me/api/?results=50"
-        ),
-        // fetch("https://randomuser.me/api/?results=50"),
-        new Promise((resolve) => setTimeout(resolve, 3000)),
-      ]).then(([res]) => res.results),
-  });
+  const { data: users, isLoading } = useFetchPosts();
 
-  // if (isLoading) return  ;
+  // if (isLoading) return <CardsListLoader numberOfCards={5} /> ;
 
   return [...posts, ...(users.map(mapRandomUserToPost) ?? [])].map(
     ({
