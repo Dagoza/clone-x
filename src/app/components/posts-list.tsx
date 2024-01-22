@@ -1,5 +1,6 @@
 "use client";
 import { useFetchPosts } from "../hooks/usePosts";
+import { useFavoritePostsStore } from "../store/FavoritePosts";
 import { Post, RandomUser } from "../types";
 import TwitterCard from "./twitter-card";
 
@@ -16,6 +17,7 @@ const mapRandomUserToPost = (user: RandomUser): Post => ({
 
 export function PostsList({ posts }: { posts: Post[] }) {
   const { data: users, isLoading } = useFetchPosts();
+  const { favoritePostsIds } = useFavoritePostsStore();
 
   // if (isLoading) return <CardsListLoader numberOfCards={5} /> ;
 
@@ -27,10 +29,12 @@ export function PostsList({ posts }: { posts: Post[] }) {
     }: Post) => (
       <TwitterCard
         key={id}
+        id={id}
         username={userName}
         userFullName={name}
         avatarUrl={avatarUrl}
         content={content}
+        isFavorite={favoritePostsIds.includes(id)}
       />
     )
   );

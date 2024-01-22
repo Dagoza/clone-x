@@ -7,21 +7,32 @@ import {
 } from "@nextui-org/react";
 import {
   IconHeartCode,
+  IconHeartFilled,
   IconMessageCircle,
   IconRepeat,
 } from "@tabler/icons-react";
+import { useFavoritePostsStore } from "../store/FavoritePosts";
 
 export default function TwitterCard({
+  id,
   username,
   userFullName,
   avatarUrl,
   content,
+  isFavorite,
 }: {
+  id: string;
   username: string;
   userFullName: string;
   avatarUrl: string;
   content: string;
+  isFavorite: boolean;
 }) {
+  const { addFavoritePost, removeFavoritePost } = useFavoritePostsStore();
+
+  const toggleFavorite = () => {
+    isFavorite ? removeFavoritePost(id) : addFavoritePost(id);
+  };
   return (
     <Card className="shadow-none bg-transparent hover:bg-slate-800 transition border-b rounded-none cursor-pointer border-white/20">
       <CardHeader className="justify-between">
@@ -53,8 +64,8 @@ export default function TwitterCard({
         <button>
           <IconRepeat />
         </button>
-        <button>
-          <IconHeartCode />
+        <button onClick={toggleFavorite}>
+          {isFavorite ? <IconHeartFilled /> : <IconHeartCode />}
         </button>
       </CardFooter>
     </Card>
