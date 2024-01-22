@@ -23,7 +23,8 @@
     "react-dom": "^18",
     "utf-8-validate": "^6.0.3",
     "webpack-node-externals": "^3.0.0",
-    "ws": "^8.16.0"
+    "ws": "^8.16.0",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.17.7",
